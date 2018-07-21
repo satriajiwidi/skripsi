@@ -1,0 +1,15 @@
+<section>
+	<div class="container-fluid text-center">
+		<div id="spinner-tt" class="spinner"><img src="{{ url_for('static', filename='img/spinner.gif') }}"></div>
+		<button type="button" class="btn btn-outline-dark btn-loading" id="btn-tt-live">
+			Lakukan Analisis Live
+		</button>
+
+	</div>
+
+	<div class="charts">
+		{% include 'includes/charts/_pie.html' %}
+	</div>
+
+	{% include 'includes/tabs/_komentar-2-hasil.html' %}
+</section>

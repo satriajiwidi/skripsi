@@ -1,0 +1,12 @@
+<section>
+	<div class="container-fluid text-center">
+		<div id="spinner-tt" class="spinner"><img src="{{ url_for('static', filename='img/spinner.gif') }}"></div>
+		<button type="button" class="btn btn-outline-dark btn-loading" id="btn-tt">
+			Lakukan Training-Testing
+		</button>
+
+		<div class="charts">
+			{% include 'includes/charts/_bar.html' %}
+		</div>
+	</div>
+</section>

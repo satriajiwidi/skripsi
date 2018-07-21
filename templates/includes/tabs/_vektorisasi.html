@@ -1,0 +1,36 @@
+<section class="text-center">
+	<div class="container">
+		<!-- <div id="spinner-vekktor" class="spinner"><img src="{{ url_for('static', filename='img/spinner.gif') }}"></div>
+		<button type="button" class="btn btn-outline-dark btn-loading" id="btn-vektor">
+			Vektorisasi Data
+		</button> -->
+
+		{% for data in vektor %}
+			{% for fitur in data %}
+			<table class="table table-striped" id="Vektorisasi">
+				<thead class="thead-dark">
+					<tr>
+						<th colspan="11">Feature Vector {{ fitur.title() }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					{% for baris in data[fitur] %}
+						<tr>
+							{% for kolom in baris %}
+								<td class="{{ 'kelas-neg' if kolom != 0 else '' }}">{{ kolom }}</td>
+							{% endfor %}
+							<td>...</td>
+						</tr>
+					{% endfor %}
+					
+					<tr>
+						<td colspan="11">...</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			{% endfor %}
+		{% endfor %}
+	</div>
+</section>

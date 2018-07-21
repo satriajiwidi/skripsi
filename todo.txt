@@ -1,0 +1,19 @@
+# tampilkan sample raw data
+# tampilkan porsi masing2 kelas
+# tampilkan hasil preprocessing
+# tampilkan hasil vektorisasi
+# tampilkan hasil smote
+# tampilkan training dan testing
+# tampilan tabel, dengan data tables
+# hasil prediksi dalam kalimat asli, bukan hasil preprocessing
+# tampilkan sebagian feature vector
+# shuffle data latih
+# pemotongan data latih-uji belum
+# highlight kelas komentar live
+# crawl komentar satu bulan terakhir
+# piechart hasil prediksi live
+# cocokan penamaan menu dengan yg ada di laporan
+# cek url Traveloka
+# gauss model_utils
+# normalisasi jaro-winkler
+# update make_vocabs

@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Lora|Seaweed+Script');
+
+* {
+	border-radius: 0 !important;
+}
+html {
+	min-height: 100%;
+	position: relative;
+}
+body {
+	margin-bottom: 10rem;
+}
+html, body {
+	font-family: 'Lato', sans-serif;
+}
+p {
+	font-family: 'Lora', serif;
+}
+button {
+	border-radius: 0 !important;
+}
+
+.teks-input {
+	border-radius: 0 !important;
+	padding: 1rem;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075) inset, 0 0 30px rgba(0,0,0, 0.5);
+	font-size: 1.2em;
+}
+.teks-input:focus {
+	color: #F06292;
+	border-color: rgba(240,98,146, 0.8);
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075) inset, 0 0 30px rgba(240,98,146, 0.5);
+	outline: 0 none;
+}
+
+.form-div {
+	/*background-color: white;*/
+	/*position: absolute;*/
+	left: 0;
+	right: 0;
+}
+.form-div div button {
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075) inset, 0 0 30px rgba(0,0,0, 0.5);
+	padding: 1.1rem 2rem 1.1rem 2rem;
+	background-color: white;
+	color: #F06292;
+	border-color: white;
+}
+.form-div div button:hover {
+	background-color: #F06292;
+	color: white;
+	border-color: #F06292;
+}
+.form-div div button:onclick {
+	background-color: #F06292;
+	color: white;
+	border-color: #F06292;
+}
+.form-div div button:active:focus {
+	background-color: #D04070 !important;
+	color: white;
+	border-color: #F06292 !important;
+	box-shadow: 0 2px 2px rgba(240,98,146, 0.075) inset, 0 0 10px rgba(240,98,146, 0.5) !important;
+}
+
+.jumbotron {
+	min-height: 30rem;
+	background: url('../img/heading.jpeg') no-repeat;
+	background-position: center center;
+	color: white;
+	border-radius: 0;
+	position: relative;
+}
+.jumbotron h1 {
+	font-family: 'Seaweed Script', cursive;
+	/*color: #F06292;*/
+	text-shadow: 2px 2px 10px rgba(0,0,0, 0.3);
+	color: white;
+}
+.jumbotron p {
+	font-family: 'Lato', sans-serif;
+	font-size: 1.5em;
+	color: #00aced;
+	display: none;
+	text-shadow: 1px 1px #333333;
+}
+footer .card {
+	border-radius: 0 !important;
+	margin-top: 3rem;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	background-color: #263238;
+	color: #90A4AE;
+}
+
+.charts .bar {
+	/*display: none;*/
+}
+
+#raw_data {
+	height: 20rem;
+	width: 100%;
+	overflow-y: scroll;
+}
+.card.porsi_data {
+	margin: 2rem;
+}
+.card.porsi_data div h5 {
+	color: grey;
+}
+.card.porsi_data div p {
+	color: #4A148C;
+	font-size: 4em;
+	font-weight: bold;
+}
+
+section {
+	margin-top: 3rem;
+	margin-bottom: 3rem;
+}
+
+section div h1 {
+	color: grey;
+}
+
+.underline-section-title {
+	margin-left: 25rem;
+	margin-bottom: 2rem;
+	/*background-color: black;*/
+	height: .2em;
+	opacity: .3;
+	width: 20%;
+}
+
+td {
+	font-family: 'Lora', serif;
+}
+
+.btn-loading {
+	margin: 3rem;
+	padding: 3rem;
+	font-size: 2em;
+	width: 30rem;
+	height: 15rem;
+}
+.btn-loading-after {
+	margin: 1rem;
+	padding: 0 2rem 0 2rem;
+	font-size: 1.5em;
+	color: #55aa55 !important;
+	border-color: #55aa55;
+	cursor: not-allowed;
+}
+
+#spinner {
+	/*width: 10px;*/
+	/*height: auto;*/
+}
+
+.kelas-pos {
+	color: #55aa55;
+}
+.kelas-neg {
+	color: #aa5555;
+}
+
+#myTab li {
+	background-color: white;
+}
+#myTab li a {
+	color: #AAAAAA;
+	text-transform: uppercase;
+}
+#myTab li a.active {
+	color: #F06292;
+	/*text-decoration: underline;*/
+	/*font-weight: bold;*/
+	border-top: solid;
+	border-bottom: 0;
+	margin-top: -7px;
+}
+
+.n-kelas {
+	margin: 3rem 0 3rem 0 !important;
+}
+
+.modal-content {
+	border-radius: 3px !important;
+}
+
+.modal-body p {
+	font-size: 1.2em;
+	font-family: 'Oswald', sans-serif;
+}
+
+.fa-check {
+	color: #55aa55;
+	border: solid;
+	border-radius: 50% !important;
+	padding: 1rem;
+	margin-bottom: 2rem;
+	margin-top: 2rem;
+}
+.nav-tabs {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.nav-menu {
+	margin: 0;
+}
+
+.btn-nav {
+	color: black;
+	padding: 1rem 1.5rem 1rem 1.5rem;
+	text-transform: uppercase;
+}
+.btn-nav:hover {
+	text-decoration: none;
+	color: black;
+	background-color: rgba(0,0,0,0.05);
+}
+.btn-nav.active {
+	color: #F06292;
+	background-color: rgba(255,0,0,0.03);
+	border-bottom: solid;
+	/*font-weight: bold;*/
+}
+.btn-pie {
+	margin-bottom: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+.pie-chart-div {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	border: 1px solid #DDDDDD;
+}
+.btn-submit:disabled,
+.btn-submit[disabled] {
+	cursor: not-allowed;
+	background-color: rgba(0,0,0,.5);
+	border-color: black;
+}

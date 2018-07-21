@@ -1,0 +1,248 @@
+<script
+  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bar.js') }}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/pie.js') }}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+
+<script>
+	var $json_data_tt;
+
+	$(document).ready(function () {
+		$('#myTab li a').on('click', function (e) {
+			e.preventDefault()
+			$(this).tab('show')
+			console.log($(this).attr('href'))
+		})
+
+		$('#raw-data').DataTable({
+	        "processing": true,
+	        "ajax": "/api/raw-data",
+	        "columns": [
+	        	{ data: 'text', name: 'text', searchable: true, orderable: true },
+	        	{ data: 'class', name: 'class' }
+	        ]
+	    });
+
+		$('#table-komentar').DataTable({
+	        "processing": true,
+	        "ajax": "/api/komentar-preprocessed",
+	        "columns": [
+	        	{ data: 'text', name: 'text', searchable: true, orderable: true },
+	        	{
+	        		data: 'kelas',
+	        		name: 'kelas',
+			        "createdCell": function (td, cellData, rowData, row, col) {
+			        	if (cellData == 'positif') {
+		            		$(td).addClass('kelas-pos');
+			        	} else {
+		            		$(td).addClass('kelas-neg');
+			        	}
+		            }
+	        	}
+	        ]
+	    });
+
+		$('.spinner').hide();
+		$('#info-data-smote').hide();
+		$('.bar').hide();
+		$('.pie').hide();
+		$('.report').hide();
+		$btnClicked = null;
+
+		$('#btn-smote').click(function () {
+			$btnClicked = $(this);
+			console.log($btnClicked)
+			$.get('http://localhost:5000/api/smote', function (json_data) {
+				json_data = JSON.parse(json_data)
+				$('#info-data-smote').delay(1500).fadeIn(300);
+				$('#n_pos_smote').text(json_data['n_pos']);
+				$('#n_neg_smote').text(json_data['n_neg']);
+			});
+		});
+
+		$json_data_tt = null;
+		$('#btn-tt').click(function () {
+			$btnClicked = $(this);
+			console.log($btnClicked)
+			$.get('http://localhost:5000/api/training', function (json_data) {
+				$json_data_tt = JSON.parse(json_data);
+				console.log('sukses');
+				console.log(perfomances = ($json_data_tt));
+				cetak_chart($json_data_tt);
+			});
+			$.get('http://localhost:5000/api/best-model', function (json_data) {
+				$data_best_model = JSON.parse(json_data);
+				console.log($data_best_model);
+				$('#best-model').text($data_best_model['best_model'] + '/' + $data_best_model['best_fitur']);
+			});
+		});
+
+		$(document).on({
+			ajaxStart: function () {
+				$('.spinner').fadeIn();
+				if ($btnClicked.attr('id') !== 'btn-submit') {
+					$btnClicked.hide();
+				} else {
+					$btnClicked.text('loading...');
+				}
+			},
+			ajaxStop: function (data) {
+				$('.spinner').delay(500).fadeOut();
+
+				// bukan merupakan loading pertama kali
+				if ($btnClicked !== null) {
+
+					if ($btnClicked.attr('id') == 'btn-tt') {
+						$btnClicked.hide();
+						$('.report').delay(1500).fadeIn(300);
+						$('.bar').delay(1600).fadeIn(300);
+					} else if ($btnClicked.attr('id') == 'btn-submit') {
+						console.log('btn-submit');
+						$btnClicked.text('SUBMIT');
+						$btnClicked.prop("disabled", true);
+					} else if ($btnClicked.attr('id') == 'btn-tt-live') {
+						$btnClicked.hide();
+						$('.pie').delay(1500).fadeIn(300);
+						$('#komentar-live-hasil').delay(1500).fadeIn(300);
+					} else {
+						$btnClicked.removeClass('btn-loading');
+						$btnClicked.addClass('btn-loading-after');
+						if ($btnClicked.attr('id') == 'btn-smote') {
+							$btnClicked.text('SMOTE berhasil');
+							$btnClicked.slideUp(700);
+						} else {
+							$btnClicked.text('Vektorisasi berhasil');
+						}
+					}
+
+				}
+		    }    
+		});
+
+		if ({{flag|tojson}}=='uji') {
+			$('#raw_data-section').hide();
+			$('#komentar-live').hide();
+		}
+
+		$('#btn-submit').click(function () {
+			$btnClicked = $(this);
+			console.log('btn-submit');
+			$url = $('#input-url').val();
+			if ($url !== '') {
+				if ($url.split('/').length-1 !== 6) {
+					swal({
+						type: 'error',
+						title: 'Oops...',
+						text: 'Format URL tidak tepat',
+					})
+				} else if ($url.split('/')[3] !== 'id') {
+					swal({
+						type: 'error',
+						title: 'Oops...',
+						text: 'URL tidak dalam bahasa Indonesia',
+					})
+				} else {
+					$url = 'http://localhost:5000/crawl?url=' + $url
+					$.get($url, function (json_data) {
+						$('#raw-data-2').DataTable({
+					        "processing": true,
+					        "ajax": '/api/raw_data_live',
+					        "columns": [
+					        	{
+					        		data: 'text',
+					        		name: 'text',
+					        		searchable: true,
+					        		orderable: true
+					        	},
+					        ]
+					    });
+
+						$('#table-komentar-live').DataTable({
+					        "processing": true,
+					        "ajax": '/api/komentar-preprocessed-live',
+					        "columns": [
+					        	{
+					        		data: 'text',
+					        		name: 'text',
+					        		searchable: true,
+					        		orderable: true
+					        	},
+					        ]
+					    });
+
+						$('#raw_data-section').show();
+						$('#komentar-live').show();
+					});
+				}
+			}
+		});
+		$('#btn-submit').mouseup(function() { this.blur() });
+
+		$('#komentar-live-hasil').hide();
+		table_komentar_live_hasil = null;
+		$('#btn-tt-live').click(function () {
+			$btnClicked = $(this);
+			console.log($btnClicked);
+
+			table_komentar_live_hasil = $('#table-komentar-live-hasil').DataTable({
+		        "processing": true,
+		        "ajax": "/api/uji-live/dt",
+		        "columns": [
+		        	{ data: 'text', name: 'text', searchable: true, orderable: true },
+		        	{
+		        		data: 'kelas',
+		        		name: 'kelas',
+				        "createdCell": function (td, cellData, rowData, row, col) {
+				        	if (cellData == 'positif') {
+			            		$(td).addClass('kelas-pos');
+				        	} else {
+			            		$(td).addClass('kelas-neg');
+				        	}
+			            }
+	        		}
+		        ]
+		    });
+		    
+			$pred = null;
+			$best_fitur = null;
+			$.get('http://localhost:5000/api/uji-live', function (data) {
+				$data = JSON.parse(data);
+				$pred = $data['pred'];
+				$best_fitur = $data['best_fitur'];
+				$pie_n_pos = $data['n_pos'];
+				$pie_n_neg = $data['n_neg'];
+				$pie_n_total = $pie_n_pos + $pie_n_neg;
+				cetak_pie($pie_n_pos, $pie_n_neg, table_komentar_live_hasil);
+				console.log('sukses');
+				console.log(pred = ($pred));
+
+				$('#btn-total').text('Total komentar: ' + $pie_n_total);
+				$('#btn-n-pos').text('Jumlah komentar positif: ' + $pie_n_pos);
+				$('#btn-n-neg').text('Jumlah komentar negatif: ' + $pie_n_neg);
+			});
+
+			console.log(pred = ($pred));
+
+		    $('#komentar-live-hasil').show();
+
+		});
+
+		$('#btn-total').click(function () {
+			table_komentar_live_hasil.search('').columns().search('').draw();
+		});
+		$('#btn-n-pos').click(function () {
+			table_komentar_live_hasil.column(1).search('positif').draw();
+		});
+		$('#btn-n-neg').click(function () {
+			table_komentar_live_hasil.column(1).search('negatif').draw();
+		});
+
+	});
+</script>
