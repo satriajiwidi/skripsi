@@ -1,1 +1,1 @@
-# Source code skripsi Widi Satriaji
+# Source code program skripsi Widi Satriaji
